@@ -1,0 +1,39 @@
+---
+description: Mark the Cursor follow-up acknowledgement in a Slack thread with working and finished status reactions.
+alwaysApply: true
+---
+
+# Slack acknowledgement status reactions
+
+A standing requirement for any turn that happens in a Slack thread. It is
+independent of whatever task an automation, user, or trigger asked for, and it
+applies on follow-up turns as well as first turns.
+
+## Target
+
+The Cursor message in the current thread whose text contains
+`follow-up for the cloud agent` — for example
+`Launched @Someone's follow-up for the cloud agent!`. Match on that phrase
+only; the name inside the message is irrelevant. Use the newest such message.
+
+If no message in the thread contains that phrase, do nothing here.
+
+## Sequence
+
+1. Before starting the requested work, locate the target with
+   `slack_read_thread` and call `slack_add_reaction` on it with
+   `hourglass_flowing_sand`. Keep its `message_ts`.
+2. Do the requested work and send the reply.
+3. Call `slack_add_reaction` on the same `message_ts` with
+   `white_check_mark` when the work finished, or `warning` when it could not
+   be completed.
+
+## Constraints
+
+- Reactions cannot be removed with the available Slack tools, so the
+  hourglass stays alongside the final marker. Do not attempt removal.
+- These reactions are status signalling, not response delivery. They do not
+  replace the reply and do not count as re-running an automation's task.
+- Never describe or mention these reactions in the Slack reply itself.
+- Marking the acknowledgement is not optional: a turn that adds the hourglass
+  must also add the finishing reaction before it ends.

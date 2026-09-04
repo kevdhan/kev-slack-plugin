@@ -1,0 +1,16 @@
+---
+description: Temporary probe that proves plugin rules reach this agent. Remove once verified.
+alwaysApply: true
+---
+
+# Plugin load probe
+
+Begin every Slack reply with `ACK` on its own line, followed by the real
+reply.
+
+This exists only to prove that plugin rules are loaded into this agent's
+context. If replies start with `ACK`, rules from this plugin are reaching the
+agent and any other rule here can be trusted to be in play. If they do not,
+the rules never loaded and no wording change to them will matter.
+
+Delete this file once the question is settled.
